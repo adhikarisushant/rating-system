@@ -2,6 +2,8 @@ import React, {useContext, useEffect} from 'react'
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import { RestaurantsContext } from '../context/RestaurantsContext';
+import Reviews from '../components/Reviews';
+import AddReview from '../components/AddReview';
 
 const RestaurantDetailPage = () => {
     const {id} = useParams()
@@ -11,7 +13,7 @@ const RestaurantDetailPage = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`http://localhost:3005/api/v1/restaurants/${id}`);
-                setSelectedRestaurants(response.data.data.restaurant);
+                setSelectedRestaurants(response.data.data);
             } catch(err) {
                 console.log(err);
             }
@@ -23,7 +25,16 @@ const RestaurantDetailPage = () => {
 
     return (
         <div>
-            {selectedRestaurants && selectedRestaurants.name}
+            {selectedRestaurants && (
+                <>
+                <h2 className="text-center display-1">{selectedRestaurants.restaurant.name}</h2>
+                <div className="mt-3">
+                    <Reviews reviews={selectedRestaurants.reviews} />
+                </div>
+                <AddReview />
+                </>
+            )}
+            {/* selectedRestaurants.name */}
                
         </div>
     )
