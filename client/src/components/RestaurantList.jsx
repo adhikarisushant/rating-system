@@ -2,6 +2,7 @@
     import axios from 'axios';
     import {useNavigate} from 'react-router-dom'
     import { RestaurantsContext }from '../context/RestaurantsContext';
+    import StarRating from './StarRating';
     
     const RestaurantList = (props) => {
         let navigate = useNavigate();
@@ -41,6 +42,20 @@
             navigate(`/restaurants/${id}`)
         }
 
+        const renderRating = (i) => {
+            if(!i.count){
+                return(
+                    <span className="text-warning ml-1">0 reviews</span>
+                );
+            }
+            return(
+                <>
+                    <StarRating rating={i.id} />
+                    <span className="text-warning ml-1">({i.count})</span>
+                </>
+            );
+        }
+
         return (
             <div className="list-group">
                 <table className="table table table-hover table-dark">
@@ -65,7 +80,7 @@
                                 <td>{i.name}</td>
                                 <td>{i.location}</td>
                                 <td>{"$".repeat(i.price_range)}</td>
-                                <td>rating</td>
+                                <td>{renderRating(i)}</td>
                                 <td><button onClick={(e) => handleUpdate(e, i.id)} className="btn btn-warning">Update</button></td>
                                 <td><button onClick={(e) => handleDelete(e, i.id)} className="btn btn-danger">Delete</button></td>
                             </tr>
